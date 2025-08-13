@@ -39,3 +39,17 @@
 
 # debug information files
 *.dwo
+*.user
+*.tlog
+*.ipch
+*.vsidx
+/Compiler1/.vs/Compiler1/v17
+/.vs/Compiler1/v17
+/.vs
+*.recipe
+/Compiler1/x64/Debug/Compiler1.log
+/Compiler1/x64/Debug/Compiler1.vcxproj.FileListAbsolute.txt
+/Compiler1/x64/Debug/vc143.idb
+/Compiler1/Compiler1.sln
+/Compiler1/Compiler1.vcxproj
+/Compiler1/Compiler1.vcxproj.filters
