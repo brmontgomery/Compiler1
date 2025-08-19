@@ -74,6 +74,22 @@ char GetNum() {
 }
 
 
+//{-------------------------------------------------------------- - }
+//{ Parse and Translate an Identifier }
+
+void Ident() {
+	char Name = GetName();
+	if (io.Look == '(') {
+		Match('(');
+		Match(')');
+		io.EmitLn("BSR " + Name);
+	}
+	else {
+		io.EmitLn(std::string("MOVE ") + Name + std::string("(PC), D0"));
+	}
+}
+
+
 //{--------------------------------------------------------------}
 //{ Change an Expression to Assembly }
 void Factor() {
@@ -81,6 +97,9 @@ void Factor() {
 		Match('(');
 		Expression();
 		Match(')');
+	}
+	else if (IsAlpha(io.Look)) {
+		Ident();
 	}
 	else {
 		io.EmitLn(std::string("MOVE #") + GetNum() + std::string(", D0"));
@@ -172,6 +191,17 @@ void Expression() {
 	}
 }
 
+//{--------------------------------------------------------------}
+//{ Parse and Translate an Assignment Statement }
+
+void Assignment() {
+	char Name = GetName();
+	Match('=');
+	Expression();
+	io.EmitLn(std::string("LEA ") + Name + std::string("(PC),A0"));
+	io.EmitLn("MOVE D0, (A0)");
+}
+
 
 //{--------------------------------------------------------------}
 //{ Initialize }
@@ -183,7 +213,10 @@ void Init() {
 //{ Main Program }
 int main() {
 	Init();
-	Expression();
+	Assignment();
+	if (io.Look != '\r' && io.Look != '\n' && io.Look != '\0') {
+		io.Expected("Newline");
+	}
 	return 0;
 }
 //{--------------------------------------------------------------}
